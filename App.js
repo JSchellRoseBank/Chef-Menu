@@ -27,7 +27,14 @@ const HomePageGuest = ({ menuData }) => {
           Browse Our Menu Below{'\n'}or Choose Whatever Course You Want
         </Text>
 
-        <Text style={styles.filterLabel}>Filter By:</Text>
+        <View style={styles.filterHeader}>
+          <Text style={styles.filterLabel}>Filter By:</Text>
+          {filter && (
+            <TouchableOpacity style={styles.clearBtn} onPress={() => setFilter(null)}>
+              <Text style={styles.clearText}>Clear</Text>
+            </TouchableOpacity>
+          )}
+        </View>
         {['Starters', 'Mains', 'Desserts'].map(c => (
           <TouchableOpacity key={c} style={styles.filterBtn} onPress={() => setFilter(c)}>
             <Text style={styles.filterText}>{c}</Text>
@@ -254,5 +261,22 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     color: '#000',
+  },
+  filterHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  clearBtn: {
+    backgroundColor: '#eee',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 6,
+  },
+  clearText: {
+    color: '#000',
+    fontSize: 12,
+    fontWeight: 'bold',
   },
 });
