@@ -2,15 +2,13 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 const Tab = createBottomTabNavigator();
+const { height } = Dimensions.get('window');
 
 const menuData = [
-  { id: '1', course: 'Starters', name: 'CHICKEN STRIPS', desc: 'CRUMBED CHICKEN BREAST DEEP-FRIED IN BEEF TALLOW', price: 300 },
-  { id: '2', course: 'Mains', name: '400G STEAK', desc: '400 GRAMS OF DELICIOUS BEEF FILLET', price: 400 },
-  { id: '3', course: 'Desserts', name: 'MALVA PUDDING', desc: "SOUTH AFRICA'S NO.1 DESSERT", price: 90 },
 ];
 
 const HomePageGuest = () => {
@@ -18,34 +16,38 @@ const HomePageGuest = () => {
   const filteredMenu = filter ? menuData.filter(i => i.course === filter) : menuData;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.logo}>👨‍🍳</Text>
-      <Text style={styles.title}>Chef’s Choice</Text>
-      <Text style={styles.subtitle}>Browse Our Menu Below{'\n'}or Choose Whatever Course You Want</Text>
+    <SafeAreaView style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <Text style={styles.logo}>👨‍🍳</Text>
+        <Text style={styles.title}>Chef’s Choice</Text>
+        <Text style={styles.subtitle}>
+          Browse Our Menu Below{'\n'}or Choose Whatever Course You Want
+        </Text>
 
-      <Text style={styles.filterLabel}>Filter By:</Text>
-      {['Starters', 'Mains', 'Desserts'].map(c => (
-        <TouchableOpacity key={c} style={styles.filterBtn} onPress={() => setFilter(c)}>
-          <Text style={styles.filterText}>{c}</Text>
-        </TouchableOpacity>
-      ))}
+        <Text style={styles.filterLabel}>Filter By:</Text>
+        {['Starters', 'Mains', 'Desserts'].map(c => (
+          <TouchableOpacity key={c} style={styles.filterBtn} onPress={() => setFilter(c)}>
+            <Text style={styles.filterText}>{c}</Text>
+          </TouchableOpacity>
+        ))}
 
-      <View style={styles.menuHeader}>
-        <Text style={styles.menuTitle}>Menu</Text>
-        <Text>TOTAL ITEMS: {filteredMenu.length}</Text>
-      </View>
-
-      {filteredMenu.map(item => (
-        <View key={item.id} style={styles.menuItem}>
-          <Text style={styles.course}>{item.course}</Text>
-          <View style={styles.itemRow}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text>R {item.price.toFixed(2)}</Text>
-          </View>
-          <Text style={styles.itemDesc}>{item.desc}</Text>
+        <View style={styles.menuHeader}>
+          <Text style={styles.menuTitle}>Menu</Text>
+          <Text>TOTAL ITEMS: {filteredMenu.length}</Text>
         </View>
-      ))}
-    </ScrollView>
+
+        {filteredMenu.map(item => (
+          <View key={item.id} style={styles.menuItem}>
+            <Text style={styles.course}>{item.course}</Text>
+            <View style={styles.itemRow}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text>R {item.price.toFixed(2)}</Text>
+            </View>
+            <Text style={styles.itemDesc}>{item.desc}</Text>
+          </View>
+        ))}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -56,46 +58,56 @@ const HomePageChef = () => {
   const [price, setPrice] = useState('');
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.logo}>👨‍🍳</Text>
-      <Text style={styles.title}>Chef’s Choice</Text>
-      <Text style={styles.subtitle}>Fill Out The Dishes Details Below:</Text>
+    <SafeAreaView style={styles.screen}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <Text style={styles.logo}>👨‍🍳</Text>
+        <Text style={styles.title}>Chef’s Choice</Text>
+        <Text style={styles.subtitle}>Fill Out The Dishes Details Below:</Text>
 
-      <TextInput style={styles.input} placeholder="Dish Name" value={dish} onChangeText={setDish} />
-      <TextInput style={styles.input} placeholder="Description" value={desc} onChangeText={setDesc} />
-      <Picker selectedValue={course} onValueChange={setCourse} style={styles.input}>
-        <Picker.Item label="Starters" value="Starters" />
-        <Picker.Item label="Mains" value="Mains" />
-        <Picker.Item label="Desserts" value="Desserts" />
-      </Picker>
-      <TextInput style={styles.input} placeholder="Amount" keyboardType="numeric" value={price} onChangeText={setPrice} />
+        <TextInput style={styles.input} placeholder="Dish Name" value={dish} onChangeText={setDish} />
+        <TextInput style={styles.input} placeholder="Description" value={desc} onChangeText={setDesc} />
+        <Picker selectedValue={course} onValueChange={setCourse} style={styles.input}>
+          <Picker.Item label="Starters" value="Starters" />
+          <Picker.Item label="Mains" value="Mains" />
+          <Picker.Item label="Desserts" value="Desserts" />
+        </Picker>
+        <TextInput
+          style={styles.input}
+          placeholder="Amount"
+          keyboardType="numeric"
+          value={price}
+          onChangeText={setPrice}
+        />
 
-      <TouchableOpacity style={styles.btn}>
-        <Text style={styles.btnText}>Add Dish</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.btnText}>Add Dish</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const ChefMenu = () => (
-  <ScrollView contentContainerStyle={styles.container}>
-    <Text style={styles.menuTitle}>Menu Items:</Text>
-    {menuData.map(item => (
-      <View key={item.id}>
-        <Text style={styles.courseHeader}>{item.course.toUpperCase()}:</Text>
-        <View style={styles.card}>
-          <View style={styles.itemRow}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text>R {item.price.toFixed(2)}</Text>
+  <SafeAreaView style={styles.screen}>
+    <ScrollView contentContainerStyle={styles.scroll}>
+      <Text style={styles.menuTitle}>Menu Items:</Text>
+      {menuData.map(item => (
+        <View key={item.id}>
+          <Text style={styles.courseHeader}>{item.course.toUpperCase()}:</Text>
+          <View style={styles.card}>
+            <View style={styles.itemRow}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text>R {item.price.toFixed(2)}</Text>
+            </View>
+            <Text style={styles.itemDesc}>{item.desc}</Text>
+            <TouchableOpacity style={styles.removeBtn}>
+              <Text style={styles.removeText}>REMOVE</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.itemDesc}>{item.desc}</Text>
-          <TouchableOpacity style={styles.removeBtn}>
-            <Text style={styles.removeText}>REMOVE</Text>
-          </TouchableOpacity>
         </View>
-      </View>
-    ))}
-  </ScrollView>
+      ))}
+    </ScrollView>
+  </SafeAreaView>
 );
 
 export default function App() {
@@ -118,7 +130,17 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, backgroundColor: '#fff' },
+  screen: {
+    flex: 1,
+    backgroundColor: '#fff',
+    height: height,
+  },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+    marginTop: 40,
+    padding: 20,
+  },
   logo: { fontSize: 40, textAlign: 'center' },
   title: { fontSize: 26, fontWeight: '600', textAlign: 'center', marginVertical: 10 },
   subtitle: { fontSize: 16, textAlign: 'center', marginBottom: 20 },
@@ -136,7 +158,16 @@ const styles = StyleSheet.create({
   btn: { backgroundColor: '#000', padding: 14, borderRadius: 8, marginTop: 10 },
   btnText: { color: '#fff', textAlign: 'center', fontWeight: '500' },
   courseHeader: { fontWeight: 'bold', textDecorationLine: 'underline', marginTop: 20 },
-  card: { backgroundColor: '#fff', borderRadius: 6, padding: 15, marginTop: 8, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    padding: 15,
+    marginTop: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   removeBtn: { backgroundColor: '#000', padding: 10, borderRadius: 6, marginTop: 10 },
   removeText: { color: '#fff', textAlign: 'center' },
 });
