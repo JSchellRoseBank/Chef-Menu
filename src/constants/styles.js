@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: 40,
     padding: 20,
+    paddingBottom: 100,
   },
   logo: { 
     fontSize: 40, 
@@ -156,6 +157,29 @@ export const styles = StyleSheet.create({
     color: '#000',
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  emptyContainer: {
+    marginTop: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  emptyText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#555',
+    marginBottom: 10,
+  },
+  emptySubtext: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+  },
+  divider: {
+    height: 2,
+    backgroundColor: '#E0E0E0',
+    marginVertical: 30,
+    marginHorizontal: -20,
   },
 });
 

@@ -63,34 +63,47 @@ const GuestScreen = ({ menuData }) => {
 					<Text>TOTAL ITEMS: {filteredMenu.length}</Text>
 				</View>
 
-				{Object.keys(grouped).map((course) => {
-					const averagePrice = calculateAverage(grouped[course]);
-					return (
-						<View key={course}>
-							<View style={styles.sectionHeaderContainer}>
-								<Text style={styles.sectionHeader}>
-									{course}
-								</Text>
-								<Text style={styles.averagePrice}>
-									Avg: R {averagePrice.toFixed(2)}
-								</Text>
-							</View>
-							{grouped[course].map((item) => (
-								<View key={item.id} style={styles.menuItem}>
-									<View style={styles.itemRow}>
-										<Text style={styles.itemName}>
-											{item.name}
-										</Text>
-										<Text>R {item.price.toFixed(2)}</Text>
-									</View>
-									<Text style={styles.itemDesc}>
-										{item.desc}
+				{filteredMenu.length === 0 ? (
+					<View style={styles.emptyContainer}>
+						<Text style={styles.emptyText}>
+							No menu items yet! 📋
+						</Text>
+						<Text style={styles.emptySubtext}>
+							Go to "Add Menu Items" tab to add dishes
+						</Text>
+					</View>
+				) : (
+					Object.keys(grouped).map((course) => {
+						const averagePrice = calculateAverage(grouped[course]);
+						return (
+							<View key={course}>
+								<View style={styles.sectionHeaderContainer}>
+									<Text style={styles.sectionHeader}>
+										{course}
+									</Text>
+									<Text style={styles.averagePrice}>
+										Avg: R {averagePrice.toFixed(2)}
 									</Text>
 								</View>
-							))}
-						</View>
-					);
-				})}
+								{grouped[course].map((item) => (
+									<View key={item.id} style={styles.menuItem}>
+										<View style={styles.itemRow}>
+											<Text style={styles.itemName}>
+												{item.name}
+											</Text>
+											<Text>
+												R {item.price.toFixed(2)}
+											</Text>
+										</View>
+										<Text style={styles.itemDesc}>
+											{item.desc}
+										</Text>
+									</View>
+								))}
+							</View>
+						);
+					})
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	);
